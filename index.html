@@ -40,11 +40,11 @@
 					<section id="one">
 						<header class="major">
 
-							<h2>Title</h2>
+							<h2>Research</h2>
 						</header>
 						<p>Write about you</p>
 						<ul class="actions">
-							<li><a href="#" class="button">Learn More</a></li>
+							<li><a href="#" class="button">Read More</a></li>
 						</ul>
 					</section>
 
@@ -65,7 +65,7 @@
 								<p>2018-2019</p>
 							</article>
 							<article class="col-3 col-12-xsmall work-item">
-								<a href="https://research.samsung.com/sri-b" border-radius: 50%;  target="_blank" title="https://research.samsung.com/sri-b"><img src="images/samsung.png" alt="" width="100" height="100"/></a>
+								<a href="https://research.samsung.com/sri-b" border-radius: 50%;  target="_blank" title="https://research.samsung.com/sri-b"><img src="images/samsung.png" alt="" width="130" height="100"/></a>
 								<h3>Samsung Research</h3>
 								<p>Summer 2017</p>
 							</article>
@@ -79,23 +79,127 @@
 
 				<!-- Two -->
 					<section id="two">
-						<h2>Recent Work</h2>
+						<h2>Selected Publications</h2>
 						<div class="row">
 							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/thumbs/01.jpg" alt="" /></a>
-								<h3>Project Title</h3>
-								<p>Project Description</p>
+								<a href="images/ildae.png" class="image fit thumb"><img src="images/ildae.png" alt="" /></a>
+								<h3><a href = "#" style="color:#3EA99F">ILDAE: Instance-Level Difficulty Analysis of Evaluation Data</a></h3>
+								<b>Conducted Instance-Level difficulty analysis in a large-scale setup of 23 datasets with 27 models and demonstrated its five novel applications such as: <br>
+									<ul>
+										<li>Efficient Evaluations: Proposed an instance selection technique that achieves 0.72 Kendall correlation with full dataset evaluation using just ~20% instances. </li>
+										<li>Dataset Quality: Proposed a model-and-human-in-the-loop technique that modifies/repairs trivial and erroneous instances to improve the quality of evaluation datasets.</b></li>
+									</ul>
+
+								    </p>
 							</article>
 							<article class="col-6 col-12-xsmall work-item">
-								<a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/thumbs/01.jpg" alt="" /></a>
-								<h3>Project Title</h3>
-								<p>Project Description</p>
+								<a href="images/unli.png" class="image fit thumb"><img src="images/unli.png" alt="" height="325" /></a>
+								<h3><a href = "#" style="color:#3EA99F">Unsupervised Natural Language Inference Using PHL Triplet Generation</a></h3>
+								<b>
+								<ul>
+									<li>Designed three novel unsupervised settings for NLI and proposed a procedural data generation approach that outperforms the existing approaches by ~13% and raises the SOTA unsupervised performance to 66.75% on the SNLI dataset. </li>
+									<li>Provided a strategy to efficiently collect high-quality task-specific data that helps achieve 12.2%, 10.4% higher accuracy on SNLI and MNLI with just $500$ human-authored instances. </li>
+								</ul>
+								</b>
+
 							</article>
+							
+							<article class="col-12 col-12-xsmall work-item">
+								<a href="images/selective.png" class="image fit thumb"><img src="images/selective2.png" alt="" /></a>
+
+								<h3><a href = "#" style="color:#3EA99F">Selective Prediction Approaches Fail to Consistently Outperform the Simplest Baseline Despite Using Additional Resources</a></h3>
+									<ul>
+										<b>
+										<!-- <li>Humans usually choose not to answer questions on which they are likely to be incorrect.
+										In order to equip NLP systems with this selective answering capability, several task-specific approaches have been proposed.
+										However, which approaches work best across tasks or even if they consistently outperform the simplest baseline `MaxProb' remains to be explored. </li> -->
+										<li> Systematically study 'selective prediction' in a large-scale setup of 17 datasets across several NLP tasks.
+										Through comprehensive experiments under in-domain (IID), out-of-domain (OOD), and adversarial (ADV) settings, we show that despite leveraging additional resources (held-out data/computation), none of the existing approaches consistently and considerably outperforms MaxProb in all three settings. </li>
+										<li>Furthermore, their performance does not translate well across tasks.
+										For instance, <em>Monte-Carlo Dropout</em> outperforms all other approaches on Duplicate Detection datasets but does not fare well on NLI datasets, especially in the OOD setting.</li>
+										<li>Thus, we recommend that future selective prediction approaches should be evaluated across tasks and settings for reliable estimation of their capabilities. </b></li>
+									</ul>
+
+								    </p>
+							</article>
+
+							<article class="col-12 col-12-xsmall work-item">
+								<a href="images/selective.png" class="image fit thumb"><img src="images/selective.png" alt="" /></a>
+								<h3><a href = "#" style="color:#3EA99F">It's Better to Say "I Can't Answer" than Answering Incorrectly</a></h3>
+									<ul>
+										<b>
+										<li>Demonstrated that MaxProb as a selective answering technique performs well on In-Domain inputs but fairs poorly on Out-of-Domain inputs. </li>
+										<li>Proposed a novel selective answering approach that incorporates prediction confidence and instance-level difficulty score to calibrate model's outputs and achieves an improvement of up to 7.47% over existing methods on AUC of risk-coverage curve. </b></li>
+									</ul>
+
+								    </p>
+							</article>
+
+
+							<article class="col-12 col-12-xsmall work-item">
+								<!-- <a href="images/fulls/01.jpg" class="image fit thumb"><img src="images/fulls/01.jpg" alt="" /></a> -->
+								<h3><a href = "#" style="color:#3EA99F">Let the Model Decide its Curriculum for Multitask Learning</a></h3>
+								<ul>
+									<b>								
+									<li>Proposed two classes of techniques (dataset and instance-level) to arrange training instances into a learning curriculum based on model's own interpretation of difficulty.</li>
+									<li>Achieved 4% accuracy improvement over other methods on experiments conducted for 12 datasets covering varied sentence pair tasks such as NLI, duplicate detection. </li>
+								</ul>
+								</b>
+
+							</article>
+
+							<article class="col-6 col-12-xsmall work-item">
+								<a href="images/numglue.png" class="image fit thumb"><img src="images/numglue.png" alt="" /></a>
+								<h3><a href = "#" style="color:#3EA99F">NumGLUE: A Suite of Mathematical Reasoning Tasks</a></h3>
+									<ul>
+										<b>
+										<li>Proposed a multi-task benchmark that evaluates the performance of AI systems on eight different tasks that require simple numerical understanding. </li>
+										<li>Showed that this benchmark is far from being solved with neural models including large language models performing significantly worse than humans (lower by 46.4%) </b></li>
+									</ul>
+
+								    </p>
+							</article>
+							<article class="col-6 col-12-xsmall work-item">
+								<a href="images/interview.png" class="image fit thumb"><img src="images/interview.png" alt="" /></a>
+								<h3><a href = "#" style="color:#3EA99F">Interviewer-Candidate Role Play: Towards Real-World NLP Systems</a></h3>
+								<b>
+								<ul>
+									<li>Designed a multi-stage selective answering task that assists a model with instance-related information such as knowledge statements, examples at various stages when the model is not sufficiently confident in its prediction (post-abstention scenarios).</li>
+									<li>Achieved improvements of up to 72.02% in Out-of-Domain generalization. </li>
+								</ul>
+								</b>
+
+							</article>
+
 							
 						</div>
 						<ul class="actions">
 							<li><a href="#" class="button">Full Portfolio</a></li>
 						</ul>
+					</section>
+
+					<section id="two">
+						<h2>Work Experience</h2>
+						<div class="row">
+							<article class="col-6 col-12-xsmall work-item">
+								<!-- <a href="images/ildae.png" class="image fit thumb"><img src="images/ildae.png" alt="" /></a> -->
+								<h3 style="color:#3EA99F">Microsoft (Software Engineer)</h3>
+
+									<ul>
+										<b>
+										<li>Contributed towards development of a Machine Learning driven chat recommendation system aimed at augmenting user engagement with Microsoft's product 'Teams'.</li>
+										<li>Collaborated with MSR researchers for a feature titled `Intelligent Feeds' that finds relevant messages for users based on their prior activities and message text features.
+										</b></li>
+									</ul>
+							</article>
+							<article class="col-6 col-12-xsmall work-item">
+								<h3 style="color:#3EA99F">Samsung (Research Intern)</h3>
+									<ul>
+										<b>
+										<li>Orchestrated a 'context prediction' application incorporating features based on device events (e.g app usage, location) and sensor data (proximity sensor).</b></li>
+									</ul>
+							</article>
+						</div>						
 					</section>
 
 				<!-- Three -->

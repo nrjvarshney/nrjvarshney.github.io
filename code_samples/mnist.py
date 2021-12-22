@@ -7,25 +7,11 @@ from torch.utils.data import Dataset, DataLoader
 import numpy as np
 from torch.optim import Adam
 from torch.optim.optimizer import Optimizer
-
-
-class CustomDataset(Dataset):
-    def __init__(self, df_file_name, max_samples=-1):
-        df = pd.read_csv(df_file_name)
-        if (max_samples != -1):
-            df = df.head(max_samples)
-        self.labels = list(df["label"])
-        del df["label"]
-        self.features = np.array(df).tolist()
-
-    def __getitem__(self, index):
-        return {
-            "features": torch.tensor(self.features[index]),
-            "labels": torch.tensor(self.labels[index]),
-        }
-
-    def __len__(self):
-        return len(self.labels)
+from pytorch_lightning import LightningModule, Trainer
+from torch import nn
+from torchmetrics import Accuracy
+from torchvision import transforms
+from torchvision.datasets import MNIST
 
 
 def compute_accuracy(logits, labels):
@@ -41,8 +27,25 @@ class ClassificationModel(pl.LightningModule):
         self.training_arguments = training_arguments
         self.model_arguments = model_arguments
         self.other_arguments = other_arguments
-        self.fc1 = torch.nn.Linear(model_arguments.number_of_features, self.model_arguments.fc1_size)
-        self.fc2 = torch.nn.Linear(self.model_arguments.fc1_size, self.model_arguments.num_labels)
+
+        self.dims = (1, 28, 28)
+        channels, width, height = self.dims
+        self.transform = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize((0.1307,), (0.3081,)),
+            ]
+        )
+        self.model = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(channels * width * height, self.model_arguments.fc1_size),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(self.model_arguments.fc1_size, self.model_arguments.fc1_size),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(self.model_arguments.fc1_size, self.model_arguments.num_labels),
+        )
 
         self.optimizer = Adam
         self.save_hyperparameters("training_arguments")
@@ -52,22 +55,22 @@ class ClassificationModel(pl.LightningModule):
         return self.trainer.proc_rank <= 0
 
     def forward(self, x):
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
+        x = self.model(x)
         # x = F.log_softmax(x, dim=1)
         return x
 
     def _step(self, batch):
-        outputs = self(batch["features"])
+        x, y = batch
+        outputs = self.model(x)
         logits = F.log_softmax(outputs, dim=1)
         softmax_logits = F.softmax(outputs, dim=1)
-        loss = F.nll_loss(logits, batch["labels"])
+        loss = F.nll_loss(logits, y)
         return loss, softmax_logits
 
     def training_step(self, batch, batch_idx):
+        x, y = batch
         loss, logits = self._step(batch)
-        acc, predicted_label = compute_accuracy(logits, batch["labels"])
+        acc, predicted_label = compute_accuracy(logits, y)
         self.log('train_loss', loss, on_step=True, on_epoch=True, prog_bar=True)
         self.log('train_acc', acc, on_step=True, on_epoch=True, prog_bar=True)
         return {"loss": loss, "acc": acc}
@@ -82,16 +85,17 @@ class ClassificationModel(pl.LightningModule):
         print("--------------------")
 
     def validation_step(self, batch, batch_idx):
+        x, y = batch
         loss, logits = self._step(batch)
         logits = logits.squeeze(1)
-        acc, predicted_label = compute_accuracy(logits, batch["labels"])
+        acc, predicted_label = compute_accuracy(logits, y)
         self.log('val_loss', loss, on_epoch=True)
         self.log('val_acc', acc, on_epoch=True)
         return {
             "val_loss": loss,
             "val_acc": acc,
             "softmax_logits": logits.tolist(),
-            "labels": batch["labels"].tolist(),
+            "labels": y.tolist(),
             "predictions": predicted_label.tolist(),
         }
 
@@ -123,20 +127,39 @@ class ClassificationModel(pl.LightningModule):
         if (self.other_arguments.write_dev_predictions):
             output_path = self.other_arguments.output_dir + "epoch_" + str(
                 self.trainer.current_epoch) + "_" + self.other_arguments.predictions_file
-            print(f"Writing predictions for {self.other_arguments.DEV_FILE} to {output_path}")
+            print(f"Writing predictions for dev to {output_path}")
             result_df.to_csv(output_path, index=False)
         print("--------------------")
 
     def configure_optimizers(self):
+
         return self.optimizer(self.parameters(), lr=self.other_arguments.learning_rate)
 
+    def prepare_data(self):
+        # download
+        MNIST(self.other_arguments.data_dir, train=True, download=True)
+        MNIST(self.other_arguments.data_dir, train=False, download=True)
+
+    def setup(self, stage=None):
+
+        # Assign train/val datasets for use in dataloaders
+        if stage == "fit" or stage is None:
+            mnist_full = MNIST(self.other_arguments.data_dir, train=True, transform=self.transform)
+            # self.mnist_train, self.mnist_val = random_split(mnist_full, [55000, 5000])
+            number_of_train_samples = 55000
+
+            if(self.other_arguments.max_train_samples != -1):
+                number_of_train_samples = min(self.other_arguments.max_train_samples, 55000)
+            self.mnist_train = torch.utils.data.Subset(mnist_full, [i for i in range(number_of_train_samples)])
+            self.mnist_val = torch.utils.data.Subset(mnist_full, [i for i in range(55000, 60000)])
+
+        # Assign test dataset for use in dataloader(s)
+        if stage == "test" or stage is None:
+            self.mnist_test = MNIST(self.other_arguments.data_dir, train=False, transform=self.transform)
+
     def train_dataloader(self):
-        train_dataset = CustomDataset(
-            df_file_name=self.other_arguments.TRAIN_FILE,
-            max_samples=self.other_arguments.max_train_samples,
-        )
         dataloader = DataLoader(
-            train_dataset,
+            self.mnist_train,
             self.other_arguments.train_batch_size,
             drop_last=False, shuffle=True,
             num_workers=self.training_arguments.num_workers)
@@ -144,11 +167,8 @@ class ClassificationModel(pl.LightningModule):
         return dataloader
 
     def val_dataloader(self):
-        val_dataset = CustomDataset(
-            df_file_name=self.other_arguments.DEV_FILE,
-        )
 
-        return DataLoader(val_dataset,
+        return DataLoader(self.mnist_val,
                           batch_size=self.other_arguments.eval_batch_size,
                           num_workers=self.training_arguments.num_workers)
 
@@ -168,15 +188,13 @@ if __name__ == "__main__":
     # Model arguments
     model_arguments = parser.add_argument_group('model_arguments')
     model_arguments.add_argument("--num_labels", type=int)
-    model_arguments.add_argument("--number_of_features", type=int)
     model_arguments.add_argument("--fc1_size", type=int)
 
     # Other arguments
     other_arguments = parser.add_argument_group('other_arguments')
     other_arguments.add_argument("--output_dir", default="./")
     other_arguments.add_argument("--predictions_file", default="predictions.csv")
-    other_arguments.add_argument("--TRAIN_FILE", default=None)
-    other_arguments.add_argument("--DEV_FILE", default=None)
+    other_arguments.add_argument("--data_dir", default="./")
     other_arguments.add_argument("--train_batch_size", default=2, type=int)
     other_arguments.add_argument("--eval_batch_size", default=2, type=int)
     other_arguments.add_argument("--max_train_samples", default=-1, type=int)
@@ -252,7 +270,3 @@ if __name__ == "__main__":
 
     trainer = pl.Trainer(**train_params)
     trainer.fit(model)
-
-'''
-python logistic_regression.py --n_gpu 0 --num_workers 0 --num_labels 3 --number_of_features 4 --fc1_size 3 --output_dir ./outputs/models/iris/ --TRAIN_FILE ../data/iris_train.csv --DEV_FILE ../data/iris_test.csv  --train_batch_size 16 --eval_batch_size 16 --num_train_epochs 20 --save_top_k 0  --learning_rate 0.005
-'''

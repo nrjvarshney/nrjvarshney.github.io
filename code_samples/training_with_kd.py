@@ -3,40 +3,74 @@ import pytorch_lightning as pl
 from torch.nn import functional as F
 import pandas as pd
 import argparse
+from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 from torch.utils.data import Dataset, DataLoader
-import numpy as np
-from torch.optim import Adam
-from torch.optim.optimizer import Optimizer
+from transformers import (
+    AdamW,
+    get_linear_schedule_with_warmup
+)
 
 
-class CustomDataset(Dataset):
-    def __init__(self, df_file_name, max_samples=-1, label2id={}, id2label={}):
-        df = pd.read_csv(df_file_name)
+class NLIDataset(Dataset):
+    def __init__(self, tokenizer, df_file_name, input_max_len=512, max_samples=-1):
+        self.tokenizer = tokenizer
+        self.df = pd.read_csv(df_file_name)
         if (max_samples != -1):
-            df = df.head(max_samples)
-        all_labels = list(df["label"].unique())
-        all_labels.sort()
-        self.label2id = label2id
-        self.id2label = id2label
-        if (self.label2id == {}):
-            for idx, label in enumerate(all_labels):
-                self.label2id[label] = idx
-                self.id2label[idx] = label
-
-        df["label"].replace(self.label2id, inplace=True)
-        self.labels = list(df["label"])
-
-        del df["label"]
-        self.features = np.array(df).tolist()
+            self.df = self.df.head(max_samples)
+        self.input_max_len = input_max_len
 
     def __getitem__(self, index):
+        sentence1 = str(self.df.iloc[index]["sentence1"])
+
+        if ('sentence2' in self.df.columns):
+            sentence2 = str(self.df.iloc[index]["sentence2"])
+        else:
+            sentence2 = None
+
+        label = self.df.iloc[index]["label"]
+
+        instance_encoding = self._get_encoding(
+            sentence1=sentence1,
+            sentence2=sentence2,
+            add_special_tokens=True,
+            truncation=True,
+            max_length=self.input_max_len,
+            padding='max_length',
+        )
         return {
-            "features": torch.tensor(self.features[index]),
-            "labels": torch.tensor(self.labels[index]),
+            "input_ids": instance_encoding["input_ids"],
+            "attention_mask": instance_encoding["attention_mask"],
+            "labels": torch.tensor(label),
         }
 
+    def _get_encoding(self, sentence1, sentence2, add_special_tokens=False, truncation=True, max_length=-1,
+                      padding=None):
+        encoded_input = self.tokenizer.encode_plus(
+            sentence1,
+            sentence2,
+            add_special_tokens=add_special_tokens,
+            truncation=truncation,
+            max_length=max_length,
+            padding=padding,
+            return_overflowing_tokens=False,
+            return_tensors="pt",
+        )
+        if "num_truncated_tokens" in encoded_input and encoded_input["num_truncated_tokens"] > 0:
+            # print("Attention! you are cropping tokens")
+            pass
+        input_ids = encoded_input["input_ids"].squeeze(0)
+        attention_mask = encoded_input["attention_mask"].squeeze(0) if "attention_mask" in encoded_input else None
+        token_type_ids = encoded_input["token_type_ids"].squeeze(0) if "token_type_ids" in encoded_input else None
+        data_input = {
+            "input_ids": input_ids,
+            "attention_mask": attention_mask,
+        }
+        if (token_type_ids != None):
+            data_input["token_type_ids"] = token_type_ids
+        return data_input
+
     def __len__(self):
-        return len(self.labels)
+        return self.df.shape[0]
 
 
 def compute_accuracy(logits, labels):
@@ -52,28 +86,92 @@ class ClassificationModel(pl.LightningModule):
         self.training_arguments = training_arguments
         self.model_arguments = model_arguments
         self.other_arguments = other_arguments
-        self.fc1 = torch.nn.Linear(model_arguments.number_of_features, self.model_arguments.fc1_size)
-        self.fc2 = torch.nn.Linear(self.model_arguments.fc1_size, self.model_arguments.num_labels)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_arguments.model_name_or_path)
+        config = AutoConfig.from_pretrained(model_arguments.model_name_or_path,
+                                            num_labels=model_arguments.num_labels,
+                                            hidden_dropout_prob=model_arguments.hidden_dropout_prob)
 
-        self.optimizer = Adam
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_arguments.model_name_or_path,
+                                                                        config=config)
         self.save_hyperparameters("training_arguments")
         self.save_hyperparameters("model_arguments")
 
     def is_logger(self):
         return self.trainer.proc_rank <= 0
 
-    def forward(self, x):
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.fc2(x)
-        # x = F.log_softmax(x, dim=1)
-        return x
+    def forward(self,
+                input_ids=None,
+                inputs_embeds=None,
+                attention_mask=None,
+                token_type_ids=None,
+                labels=None):
+        return self.model(
+            input_ids=input_ids,
+            inputs_embeds=inputs_embeds,
+            attention_mask=attention_mask,
+            token_type_ids=token_type_ids,
+            labels=labels,
+        )
 
     def _step(self, batch):
-        outputs = self(batch["features"])
-        logits = F.log_softmax(outputs, dim=1)
-        softmax_logits = F.softmax(outputs, dim=1)
-        loss = F.nll_loss(logits, batch["labels"])
+        outputs = self(**batch)
+        loss = outputs.loss
+        logits = outputs.logits
+        softmax_logits = F.softmax(logits, dim=1)
+        return loss, softmax_logits
+
+
+class ClassificationModelKD(pl.LightningModule):
+    def __init__(self, training_arguments, model_arguments, other_arguments, teacher_model):
+        super(ClassificationModelKD, self).__init__()
+
+        self.training_arguments = training_arguments
+        self.model_arguments = model_arguments
+        self.other_arguments = other_arguments
+        self.teacher_model = teacher_model
+        self.tokenizer = AutoTokenizer.from_pretrained(model_arguments.model_name_or_path)
+        config = AutoConfig.from_pretrained(model_arguments.model_name_or_path,
+                                            num_labels=model_arguments.num_labels,
+                                            hidden_dropout_prob=model_arguments.hidden_dropout_prob)
+
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_arguments.model_name_or_path,
+                                                                        config=config)
+        self.save_hyperparameters("training_arguments")
+        self.save_hyperparameters("model_arguments")
+
+    def is_logger(self):
+        return self.trainer.proc_rank <= 0
+
+    def forward(self,
+                input_ids=None,
+                inputs_embeds=None,
+                attention_mask=None,
+                token_type_ids=None,
+                labels=None):
+        return self.model(
+            input_ids=input_ids,
+            inputs_embeds=inputs_embeds,
+            attention_mask=attention_mask,
+            token_type_ids=token_type_ids,
+            labels=labels,
+        )
+
+    def _step(self, batch):
+        outputs = self(**batch)
+        hard_loss = outputs.loss
+        logits = outputs.logits
+        softmax_logits = F.softmax(logits, dim=1)
+
+        with torch.no_grad():
+            outputs_teacher = self.teacher_model(**batch)
+
+        alpha = self.other_arguments.alpha_for_kd
+        T = self.other_arguments.temperature_for_kd
+
+        loss = torch.nn.KLDivLoss()(F.log_softmax(logits / T, dim=1),
+                                    F.softmax(outputs_teacher.logits / T, dim=1)) * (alpha * T * T) + \
+               hard_loss * (1. - alpha)
+
         return loss, softmax_logits
 
     def training_step(self, batch, batch_idx):
@@ -120,7 +218,6 @@ class ClassificationModel(pl.LightningModule):
             all_labels += torch.tensor(x["labels"]).tolist()
 
         softmax_logits_df = pd.DataFrame(all_softmax_logits)
-        softmax_logits_df = softmax_logits_df.rename(columns=self.id2label)
         print("--------------------")
         print("Validation avg_loss: ", avg_loss)
         print("Validation avg_acc: ", avg_acc)
@@ -129,8 +226,7 @@ class ClassificationModel(pl.LightningModule):
             "label": all_labels,
             "prediction": all_predictions,
         })
-        result_df["label"].replace(self.id2label, inplace=True)
-        result_df["prediction"].replace(self.id2label, inplace=True)
+
         result_df = pd.concat([result_df, softmax_logits_df], axis=1)
 
         if (self.other_arguments.write_dev_predictions):
@@ -140,76 +236,62 @@ class ClassificationModel(pl.LightningModule):
             result_df.to_csv(output_path, index=False)
         print("--------------------")
 
-    # def configure_optimizers(self):
-    #     "Prepare optimizer and schedule (linear warmup and decay)"
-    #
-    #     model = self.model
-    #     no_decay = ["bias", "LayerNorm.weight"]
-    #     optimizer_grouped_parameters = [
-    #         {
-    #             "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-    #             "weight_decay": self.training_arguments.weight_decay,
-    #         },
-    #         {
-    #             "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-    #             "weight_decay": 0.0,
-    #         },
-    #     ]
-    #     optimizer = AdamW(optimizer_grouped_parameters, lr=self.other_arguments.learning_rate,
-    #                       eps=self.training_arguments.adam_epsilon)
-    #     self.opt = optimizer
-    #     return [optimizer]
-    #
-    # def optimizer_step(self, epoch=None, batch_idx=None, optimizer=None, optimizer_idx=None, optimizer_closure=None,
-    #                    on_tpu=None, using_native_amp=None, using_lbfgs=None):
-    #     optimizer.step(closure=optimizer_closure)
-    #     optimizer.zero_grad()
-    #     self.lr_scheduler.step()
-
     def configure_optimizers(self):
+        "Prepare optimizer and schedule (linear warmup and decay)"
 
-        return self.optimizer(self.parameters(), lr=self.other_arguments.learning_rate)
+        model = self.model
+        no_decay = ["bias", "LayerNorm.weight"]
+        optimizer_grouped_parameters = [
+            {
+                "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
+                "weight_decay": self.training_arguments.weight_decay,
+            },
+            {
+                "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
+                "weight_decay": 0.0,
+            },
+        ]
+        optimizer = AdamW(optimizer_grouped_parameters, lr=self.other_arguments.learning_rate,
+                          eps=self.training_arguments.adam_epsilon)
+        self.opt = optimizer
+        return [optimizer]
+
+    def optimizer_step(self, epoch=None, batch_idx=None, optimizer=None, optimizer_idx=None, optimizer_closure=None,
+                       on_tpu=None, using_native_amp=None, using_lbfgs=None):
+        optimizer.step(closure=optimizer_closure)
+        optimizer.zero_grad()
+        self.lr_scheduler.step()
 
     def train_dataloader(self):
-        train_dataset = CustomDataset(
+        train_dataset = NLIDataset(
+            tokenizer=self.tokenizer,
             df_file_name=self.other_arguments.TRAIN_FILE,
+            input_max_len=self.model_arguments.max_input_seq_length,
             max_samples=self.other_arguments.max_train_samples,
-            label2id=self.label2id,
-            id2label=self.id2label
         )
-        # self.label2id = train_dataset.label2id
-        # self.id2label = train_dataset.id2label
-
         dataloader = DataLoader(
             train_dataset,
             self.other_arguments.train_batch_size,
-            drop_last=False, shuffle=True,
+            drop_last=True, shuffle=True,
             num_workers=self.training_arguments.num_workers)
 
-        # t_total = (
-        #         (len(dataloader.dataset) // (
-        #                 self.other_arguments.train_batch_size * max(1, self.training_arguments.n_gpu)))
-        #         // self.other_arguments.gradient_accumulation_steps
-        #         * float(self.other_arguments.num_train_epochs)
-        # )
-        # scheduler = get_linear_schedule_with_warmup(
-        #     self.opt, num_warmup_steps=self.training_arguments.warmup_steps, num_training_steps=t_total
-        # )
-        # self.lr_scheduler = scheduler
+        t_total = (
+                (len(dataloader.dataset) // (
+                        self.other_arguments.train_batch_size * max(1, self.training_arguments.n_gpu)))
+                // self.other_arguments.gradient_accumulation_steps
+                * float(self.other_arguments.num_train_epochs)
+        )
+        scheduler = get_linear_schedule_with_warmup(
+            self.opt, num_warmup_steps=self.training_arguments.warmup_steps, num_training_steps=t_total
+        )
+        self.lr_scheduler = scheduler
         return dataloader
 
     def val_dataloader(self):
-        train_dataset = CustomDataset(
-            df_file_name=self.other_arguments.TRAIN_FILE,
-            max_samples=self.other_arguments.max_train_samples,
-        )
-        self.label2id = train_dataset.label2id
-        self.id2label = train_dataset.id2label
-
-        val_dataset = CustomDataset(
+        val_dataset = NLIDataset(
+            tokenizer=self.tokenizer,
             df_file_name=self.other_arguments.DEV_FILE,
-            label2id=self.label2id,
-            id2label=self.id2label
+            input_max_len=self.model_arguments.max_input_seq_length,
         )
 
         return DataLoader(val_dataset,
@@ -223,7 +305,11 @@ if __name__ == "__main__":
     # Training arguments
     training_arguments = parser.add_argument_group('training_arguments')
     training_arguments.add_argument("--opt_level", default="O1")
+    training_arguments.add_argument("--warmup_steps", default=0, type=int)
+    training_arguments.add_argument('--weight_decay', type=float, default=0.0)
+    training_arguments.add_argument('--adam_epsilon', type=float, default=1e-8)
     training_arguments.add_argument('--max_grad_norm', type=float, default=1.0)
+    training_arguments.add_argument("--early_stop_callback", default=False, action="store_true")
     training_arguments.add_argument("--fp_16", default=False, action="store_true")
     training_arguments.add_argument("--n_gpu", default=-1, type=int)
     training_arguments.add_argument("--num_workers", default=8, type=int)
@@ -231,13 +317,17 @@ if __name__ == "__main__":
 
     # Model arguments
     model_arguments = parser.add_argument_group('model_arguments')
+    model_arguments.add_argument("--model_name_or_path", default=None)
+    model_arguments.add_argument("--max_input_seq_length", default=512, type=int)
     model_arguments.add_argument("--num_labels", type=int)
-    model_arguments.add_argument("--number_of_features", type=int)
-    model_arguments.add_argument("--fc1_size", type=int)
+    model_arguments.add_argument('--hidden_dropout_prob', type=float, default=0.15)
 
     # Other arguments
     other_arguments = parser.add_argument_group('other_arguments')
     other_arguments.add_argument("--output_dir", default="./")
+    other_arguments.add_argument("--teacher_model", default="./")
+    other_arguments.add_argument("--alpha_for_kd", default=0.9, type=float)
+    other_arguments.add_argument("--temperature_for_kd", default=20, type=int)
     other_arguments.add_argument("--predictions_file", default="predictions.csv")
     other_arguments.add_argument("--TRAIN_FILE", default=None)
     other_arguments.add_argument("--DEV_FILE", default=None)
@@ -281,9 +371,13 @@ if __name__ == "__main__":
     print("--------------------")
 
     pl.seed_everything(other_arguments.seed)
-    model = ClassificationModel(training_arguments=training_arguments,
-                                model_arguments=model_arguments,
-                                other_arguments=other_arguments)
+
+    teacher_model = ClassificationModel.load_from_checkpoint(checkpoint_path=other_arguments.teacher_model,
+                                                             other_arguments=None)
+    model = ClassificationModelKD(training_arguments=training_arguments,
+                                  model_arguments=model_arguments,
+                                  other_arguments=other_arguments,
+                                  teacher_model=teacher_model)
 
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         dirpath=other_arguments.output_dir,
@@ -316,8 +410,3 @@ if __name__ == "__main__":
 
     trainer = pl.Trainer(**train_params)
     trainer.fit(model)
-
-    # dataset = CustomDataset("../data/iris_train_copy.csv")
-    # for i in dataset:
-    #     print(i)
-    #     break

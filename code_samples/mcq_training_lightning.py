@@ -344,7 +344,7 @@ if __name__ == "__main__":
         precision=16 if training_arguments.fp_16 else 32,
         amp_level=training_arguments.opt_level,
         gradient_clip_val=training_arguments.max_grad_norm,
-        callbacks=checkpoint_callback,
+        callbacks=[checkpoint_callback],
         fast_dev_run=other_arguments.do_fast_dev_run,
     )
 

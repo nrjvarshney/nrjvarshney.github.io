@@ -258,7 +258,7 @@ if __name__ == "__main__":
     other_arguments.add_argument("--eval_batch_size", default=2, type=int)
     other_arguments.add_argument("--max_train_samples", default=-1, type=int)
     other_arguments.add_argument("--num_train_epochs", default=2, type=int)
-    other_arguments.add_argument("--gradient_accumulation_steps", default=4, type=int)
+    other_arguments.add_argument("--gradient_accumulation_steps", default=1, type=int)
     other_arguments.add_argument("--seed", default=42, type=int)
     other_arguments.add_argument("--save_top_k", default=-1, type=int)
     other_arguments.add_argument("--save_last", default=False, action="store_true")
@@ -304,7 +304,7 @@ if __name__ == "__main__":
         precision=16 if model.training_arguments.fp_16 else 32,
         amp_level=model.training_arguments.opt_level,
         gradient_clip_val=model.training_arguments.max_grad_norm,
-        callbacks=checkpoint_callback,
+        callbacks=[checkpoint_callback],
         fast_dev_run=other_arguments.do_fast_dev_run,
     )
 

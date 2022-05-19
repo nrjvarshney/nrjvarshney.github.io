@@ -130,7 +130,6 @@
         <p class="periodical font-italic">
           
             Association for Computational Linguistics
-            (To appear)            
         
       </p>
       <p  class="periodical font">We conduct <b>I</b>nstance-<b>L</b>evel <b>D</b>ifficulty <b>A</b>nalysis of <b>E</b>valuation data (ILDAE) in a large-scale setup of 23 datasets and demonstrate its five novel applications such as efficient evaluations, improving quality of evaluation datasets, dataset analysis to guide future data creation, etc.
@@ -143,7 +142,7 @@
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://www.2022.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2203.03073" target="_blank">arXiv</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2022.acl-long.240/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -158,11 +157,19 @@
         <div id="varshney2022ildae-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-@article{varshney2022ildae,
-  title={ILDAE: Instance-Level Difficulty Analysis of Evaluation Data},
-  author={Varshney, Neeraj and Mishra, Swaroop and Baral, Chitta},
-  journal={arXiv preprint arXiv:2203.03073},
-  year={2022}
+@inproceedings{varshney-etal-2022-ildae,
+    title = "{ILDAE}: Instance-Level Difficulty Analysis of Evaluation Data",
+    author = "Varshney, Neeraj  and
+      Mishra, Swaroop  and
+      Baral, Chitta",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.240",
+    pages = "3412--3425",
+    abstract = "Knowledge of difficulty level of questions helps a teacher in several ways, such as estimating students{'} potential quickly by asking carefully selected questions and improving quality of examination by modifying trivial and hard questions. Can we extract such benefits of instance difficulty in Natural Language Processing? To this end, we conduct Instance-Level Difficulty Analysis of Evaluation data (ILDAE) in a large-scale setup of 23 datasets and demonstrate its five novel applications: 1) conducting efficient-yet-accurate evaluations with fewer instances saving computational cost and time, 2) improving quality of existing evaluation datasets by repairing erroneous and trivial instances, 3) selecting the best model based on application requirements, 4) analyzing dataset characteristics for guiding future data creation, 5) estimating Out-of-Domain performance reliably. Comprehensive experiments for these applications lead to several interesting results, such as evaluation using just 5{\%} instances (selected via ILDAE) achieves as high as 0.93 Kendall correlation with evaluation using complete dataset and computing weighted accuracy using difficulty scores leads to 5.2{\%} higher correlation with Out-of-Domain performance. We release the difficulty scores and hope our work will encourage research in this important yet understudied field of leveraging instance difficulty in evaluations.",
 }</pre>
 
           </div>
@@ -216,7 +223,6 @@
         <p class="periodical font-italic">
           
             Findings of Association for Computational Linguistics
-            (To appear)            
         
       </p>
       <p  class="periodical font">We explore three unsupervised settings for NLI and propose a procedural data generation approach that outperforms the existing approaches by ~13% and raises the state-of-the-art unsupervised performance on SNLI to 66.75%.
@@ -229,7 +235,7 @@
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://www.2022.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2110.08438" target="_blank">arXiv</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2022.findings-acl.159/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -244,11 +250,20 @@
         <div id="varshney2021unsupervised-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-  @article{varshney2021unsupervised,
-  title={Unsupervised Natural Language Inference Using PHL Triplet Generation},
-  author={Varshney, Neeraj and Banerjee, Pratyay and Gokhale, Tejas and Baral, Chitta},
-  journal={arXiv preprint arXiv:2110.08438},
-  year={2021}
+@inproceedings{varshney-etal-2022-unsupervised,
+    title = "Unsupervised Natural Language Inference Using {PHL} Triplet Generation",
+    author = "Varshney, Neeraj  and
+      Banerjee, Pratyay  and
+      Gokhale, Tejas  and
+      Baral, Chitta",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2022",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.findings-acl.159",
+    pages = "2003--2016",
+    abstract = "Transformer-based models achieve impressive performance on numerous Natural Language Inference (NLI) benchmarks when trained on respective training datasets. However, in certain cases, training samples may not be available or collecting them could be time-consuming and resource-intensive. In this work, we address the above challenge and present an explorative study on unsupervised NLI, a paradigm in which no human-annotated training samples are available. We investigate it under three settings: PH, P, and NPH that differ in the extent of unlabeled data available for learning. As a solution, we propose a procedural data generation approach that leverages a set of sentence transformations to collect PHL (Premise, Hypothesis, Label) triplets for training NLI models, bypassing the need for human-annotated training data. Comprehensive experiments with several NLI datasets show that the proposed approach results in accuracies of up to 66.75{\%}, 65.9{\%}, 65.39{\%} in PH, P, and NPH settings respectively, outperforming all existing unsupervised baselines. Furthermore, fine-tuning our model with as little as {\textasciitilde}0.1{\%} of the human-annotated training dataset (500 instances) leads to 12.2{\%} higher accuracy than the model trained from scratch on the same 500 instances. Supported by this superior performance, we conclude with a recommendation for collecting high-quality task-specific data.",
 }</pre>
 
           </div>
@@ -302,7 +317,6 @@
         <p class="periodical font-italic">
           
             Findings of Association for Computational Linguistics
-            (To appear)            
         
       </p>
       <p  class="periodical font">Selective Prediciton enables systems to abstain from making predictions when they are likely to be incorrect. In this work, we systematically study 'selective prediction' in a large-scale setup of 17 datasets across several NLP tasks. We conduct experiments in in-domain, out-of-domain, and adversarial settings and evaluate several selective prediction approaches such as MaxProb, Monte-Carlo Dropout, Label Smoothing, and Calibration (C, R, and T). Our investigation results in numerous interesting findings.
@@ -315,7 +329,7 @@
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://www.2022.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2203.00211" target="_blank">arXiv</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2022.findings-acl.158/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -330,11 +344,19 @@
         <div id="varshney2022investigating-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-    @article{varshney2022investigating,
-title={Investigating Selective Prediction Approaches Across Several Tasks in IID, OOD, and Adversarial Settings},
-author={Varshney, Neeraj and Mishra, Swaroop and Baral, Chitta},
-journal={arXiv preprint arXiv:2203.00211},
-year={2022}
+@inproceedings{varshney-etal-2022-investigating,
+    title = "Investigating Selective Prediction Approaches Across Several Tasks in {IID}, {OOD}, and Adversarial Settings",
+    author = "Varshney, Neeraj  and
+      Mishra, Swaroop  and
+      Baral, Chitta",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2022",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.findings-acl.158",
+    pages = "1995--2002",
+    abstract = "In order to equip NLP systems with {`}selective prediction{'} capability, several task-specific approaches have been proposed. However, which approaches work best across tasks or even if they consistently outperform the simplest baseline MaxProb remains to be explored. To this end, we systematically study selective prediction in a large-scale setup of 17 datasets across several NLP tasks. Through comprehensive experiments under in-domain (IID), out-of-domain (OOD), and adversarial (ADV) settings, we show that despite leveraging additional resources (held-out data/computation), none of the existing approaches consistently and considerably outperforms MaxProb in all three settings. Furthermore, their performance does not translate well across tasks. For instance, Monte-Carlo Dropout outperforms all other approaches on Duplicate Detection datasets but does not fare well on NLI datasets, especially in the OOD setting. Thus, we recommend that future selective prediction approaches should be evaluated across tasks and settings for reliable estimation of their capabilities.",
 }</pre>
 
           </div>
@@ -389,7 +411,6 @@ year={2022}
         <p class="periodical font-italic">
           
             Association for Computational Linguistics
-            (To appear)            
         
       </p>
       <p  class="periodical font">We proposed a multi-task benchmark that evaluates AI systems on eight different numerical understanding tasks and showed that it is far from being solved with neural models including large language models performing significantly worse than humans (lower by 46.4%).Proposed a knowledge-retrieval based MTL method that outperforms existing models.
@@ -402,7 +423,7 @@ year={2022}
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://www.2022.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2204.05660" target="_blank">arXiv</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2022.acl-long.246/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -417,11 +438,23 @@ year={2022}
         <div id="mishra2022numglue-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-          @article{mishra2022numglue,
-  title={NumGLUE: A Suite of Fundamental yet Challenging Mathematical Reasoning Tasks},
-  author={Mishra, Swaroop and Mitra, Arindam and Varshney, Neeraj and Sachdeva, Bhavdeep and Clark, Peter and Baral, Chitta and Kalyan, Ashwin},
-  journal={arXiv preprint arXiv:2204.05660},
-  year={2022}
+@inproceedings{mishra-etal-2022-numglue,
+    title = "{N}um{GLUE}: A Suite of Fundamental yet Challenging Mathematical Reasoning Tasks",
+    author = "Mishra, Swaroop  and
+      Mitra, Arindam  and
+      Varshney, Neeraj  and
+      Sachdeva, Bhavdeep  and
+      Clark, Peter  and
+      Baral, Chitta  and
+      Kalyan, Ashwin",
+    booktitle = "Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.acl-long.246",
+    pages = "3505--3523",
+    abstract = "Given the ubiquitous nature of numbers in text, reasoning with numbers to perform simple calculations is an important skill of AI systems. While many datasets and models have been developed to this end, state-of-the-art AI systems are brittle; failing to perform the underlying mathematical reasoning when they appear in a slightly different scenario. Drawing inspiration from GLUE that was proposed in the context of natural language understanding, we propose NumGLUE, a multi-task benchmark that evaluates the performance of AI systems on eight different tasks, that at their core require simple arithmetic understanding. We show that this benchmark is far from being solved with neural models including state-of-the-art large-scale language models performing significantly worse than humans (lower by 46.4 {\%}). Further, NumGLUE promotes sharing knowledge across tasks, especially those with limited training data as evidenced by the superior performance (average gain of 3.4 {\%} on each task) when a model is jointly trained on all the tasks as opposed to task-specific modeling. Finally, we hope that NumGLUE will encourage systems that perform robust and general arithmetic reasoning within language, a first step towards being able to perform more complex mathematical reasoning.",
 }</pre>
 
           </div>
@@ -475,8 +508,7 @@ year={2022}
         <p class="periodical font-italic">
           
             Repl4NLP @ Association for Computational Linguistics
-            (To appear)            
-        
+            
       </p>
       <p  class="periodical font">Prior work has shown that existing 'selective prediction' techniques fail to perform well, especially in the out-of-domain setting. In this work, we propose a method that improves probability estimates of models by calibrating them using prediction confidence and difficulty score of instances. Using these two signals, we first annotate held-out instances and then train a calibrator to predict the likelihood of correctness of the model's prediction. We instantiate our method with Natural Language Inference (NLI) and Duplicate Detection (DD) tasks and evaluate it in both In-Domain (IID) and Out-of-Domain (OOD) settings. In (IID, OOD) settings, we show that the representations learned by our calibrator result in an improvement of (15.81%, 5.64%) and (6.19%, 13.9%) over MaxProb --a selective prediction baseline-- on NLI and DD tasks respectively.
       </div>
@@ -488,7 +520,7 @@ year={2022}
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://sites.google.com/view/repl4nlp2022/home?authuser=0" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2008.09371" target="_blank">arXiv</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2022.repl4nlp-1.23/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -503,11 +535,19 @@ year={2022}
         <div id="varshney2020s-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-          @article{varshney2020s,
-  title={It's better to say" I can't answer" than answering incorrectly: Towards Safety critical NLP systems},
-  author={Varshney, Neeraj and Mishra, Swaroop and Baral, Chitta},
-  journal={arXiv preprint arXiv:2008.09371},
-  year={2020}
+@inproceedings{varshney-etal-2022-towards,
+    title = "Towards Improving Selective Prediction Ability of {NLP} Systems",
+    author = "Varshney, Neeraj  and
+      Mishra, Swaroop  and
+      Baral, Chitta",
+    booktitle = "Proceedings of the 7th Workshop on Representation Learning for NLP",
+    month = may,
+    year = "2022",
+    address = "Dublin, Ireland",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.repl4nlp-1.23",
+    pages = "221--226",
+    abstract = "It{'}s better to say {``}I can{'}t answer{''} than to answer incorrectly. This selective prediction ability is crucial for NLP systems to be reliably deployed in real-world applications. Prior work has shown that existing selective prediction techniques fail to perform well, especially in the out-of-domain setting. In this work, we propose a method that improves probability estimates of models by calibrating them using prediction confidence and difficulty score of instances. Using these two signals, we first annotate held-out instances and then train a calibrator to predict the likelihood of correctness of the model{'}s prediction. We instantiate our method with Natural Language Inference (NLI) and Duplicate Detection (DD) tasks and evaluate it in both In-Domain (IID) and Out-of-Domain (OOD) settings. In (IID, OOD) settings, we show that the representations learned by our calibrator result in an improvement of (15.81{\%}, 5.64{\%}) and (6.19{\%}, 13.9{\%}) over {`}MaxProb{'} -a selective prediction baseline- on NLI and DD tasks respectively.",
 }</pre>
 
           </div>
@@ -633,7 +673,7 @@ year={2022}
     
       
         <span class="badge font-weight-bold danger-color-dark align-middle" style="width: 53px;">
-          ACL
+          NAACL
         </span>
       
     
@@ -889,90 +929,7 @@ year={2022}
 
 <!-- -------- -->
 
-<!-- -------- -->
 
-<div class="row m-0 p-0" style="border-top: 1px solid #ddd;">
-    <div class="col-sm-11 p-0">
-      <ol class="bibliography">
-
-        <li><div class="row m-0 mt-3 p-0">
-      <div class="col-sm-1 p-0 abbr">
-    
-      
-        <span class="badge font-weight-bold danger-color-dark align-middle" style="width: 53px;">
-          ArXiv
-        </span>
-      
-    
-      </div>
-  
-  <div class="col-sm-11 mt-2 mt-sm-0 p-0 pl-xs-0 pl-sm-4 pr-xs-0 pr-sm-2">
-    
-    <div id="verma2022learninguser" class="col p-0">
-      <h5 class="title mb-0">Curriculum Learning in Multi-task Learning.</h5>
-      <div class="author">
-          <nobr><em>Neeraj Varshney</em></nobr>, <a href="https://scholar.google.co.in/citations?user=-7LK2SwAAAAJ&hl=en" target="_blank">Swaroop Mishra</a>, <a href="https://www.public.asu.edu/~cbaral/" target="_blank">Chitta Baral</a>
-      </div>
-      <div>
-        <p class="periodical font-italic">
-          
-            ArXiv
-        
-      </p>
-      <!-- <p  class="periodical font">Prior work has shown that existing 'selective prediction' techniques fail to perform well, especially in the out-of-domain setting. In this work, we propose a method that improves probability estimates of models by calibrating them using prediction confidence and difficulty score of instances. Using these two signals, we first annotate held-out instances and then train a calibrator to predict the likelihood of correctness of the model's prediction. We instantiate our method with Natural Language Inference (NLI) and Duplicate Detection (DD) tasks and evaluate it in both In-Domain (IID) and Out-of-Domain (OOD) settings. In (IID, OOD) settings, we show that the representations learned by our calibrator result in an improvement of (15.81%, 5.64%) and (6.19%, 13.9%) over MaxProb --a selective prediction baseline-- on NLI and DD tasks respectively.
-      </div> -->
-    
-      <div class="col p-0">        
-          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#multitask-abstract" role="button" aria-expanded="false" aria-controls="multitask-abstract">Abstract</a>        
-        
-          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#varshney2020s-bibtex" role="button" aria-expanded="false" aria-controls="varshney2020s-bibtex">BibTeX</a>                
-          
-            <a class="badge grey waves-effect font-weight-light mr-1" href="https://sites.google.com/view/repl4nlp2022/home?authuser=0" target="_blank">Publisher</a>                  
-         -->
-        <!--   <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2008.09371" target="_blank">arXiv</a>                 -->
-      </div>          
-      
-      <div class="col mt-2 p-0">
-        <div id="multitask-abstract" class="collapse">
-          <div class="abstract card card-body font-weight-light mr-0 mr-sm-3 p-3">
-            Curriculum Learning in Multi-task Learning.
-          </div>
-        </div>
-      </div>
-            
-      <!-- <div class="col mt-2 p-0">
-        <div id="varshney2020s-bibtex" class="collapse">
-          <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
-            <pre>
-          @article{varshney2020s,
-  title={It's better to say" I can't answer" than answering incorrectly: Towards Safety critical NLP systems},
-  author={Varshney, Neeraj and Mishra, Swaroop and Baral, Chitta},
-  journal={arXiv preprint arXiv:2008.09371},
-  year={2020}
-}</pre>
-
-          </div>
-        </div>
-      </div> -->
-      
-
-      
-      
-    </div>
-
-  </div>
-  
-</div>
-
-
-</li>
-
-</ol>
-    </div>
-    <div class="col-sm-1 align-self-start mt-2 p-0 pr-1">
-      <h3 class="bibliography-year">2020</h3>
-    </div>
-  </div>
 
   
   <!-- Core JavaScript Files -->

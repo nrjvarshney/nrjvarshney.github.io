@@ -133,14 +133,15 @@
         
       </p>
       <p  class="periodical font">
-        <i>Do all instances need inference through the big models for a correct prediction?</i><br> 
-        Perhaps not; some instances are easy and can be answered correctly by even small capacity models. This provides opportunities for improving the computational efficiency of systems. In this work, we present an explorative study on 'model cascading', a simple technique that utilizes a collection of models of varying capacities to accurately yet efficiently output predictions. Through comprehensive experiments in multiple task settings that differ in the number of models available for cascading (K value), we show that cascading improves both the computational efficiency and the prediction accuracy. For instance, in K=3 setting, cascading saves up to 88.93% computation cost and consistently achieves superior prediction accuracy with an improvement of up to 2.18%. We also study the impact of introducing additional models in the cascade and show that it further increases the efficiency improvements. Finally, we hope that our work will facilitate development of efficient NLP systems making their widespread adoption in real-world applications possible.
+        <!-- <i>Do all instances need inference through the big models for a correct prediction?</i><br> 
+        Perhaps not; some instances are easy and can be answered correctly by even small capacity models. This provides opportunities for improving the computational efficiency of systems. In this work, we present an explorative study on 'model cascading', a simple technique that utilizes a collection of models of varying capacities to accurately yet efficiently output predictions. Through comprehensive experiments in multiple task settings that differ in the number of models available for cascading (K value), we show that cascading improves both the computational efficiency and the prediction accuracy. For instance, in K=3 setting, cascading saves up to 88.93% computation cost and consistently achieves superior prediction accuracy with an improvement of up to 2.18%. We also study the impact of introducing additional models in the cascade and show that it further increases the efficiency improvements. Finally, we hope that our work will facilitate development of efficient NLP systems making their widespread adoption in real-world applications possible. -->
+
       </div>
     
       <div class="col p-0">        
-          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#varshney2022investigating-abstract" role="button" aria-expanded="false" aria-controls="varshney2022investigating-abstract">Abstract</a>        
+          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#cascading-abstract" role="button" aria-expanded="false" aria-controls="varshney2022investigating-abstract">Abstract</a>        
         
-          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#varshney2022investigating-bibtex" role="button" aria-expanded="false" aria-controls="varshney2022investigating-bibtex">BibTeX</a> -->                
+          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#cascading-bibtex" role="button" aria-expanded="false" aria-controls="varshney2022investigating-bibtex">BibTeX</a>                 -->
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://2022.emnlp.org/" target="_blank">Publisher</a>                  
         
@@ -148,15 +149,16 @@
 
       </div>          
       
-      <!-- <div class="col mt-2 p-0">
-        <div id="varshney2022investigating-abstract" class="collapse">
+      <div class="col mt-2 p-0">
+        <div id="cascading-abstract" class="collapse">
           <div class="abstract card card-body font-weight-light mr-0 mr-sm-3 p-3">
-            In order to equip NLP systems with selective prediction capability, several task-specific approaches have been proposed. However, which approaches work best across tasks or even if they consistently outperform the simplest baseline 'MaxProb' remains to be explored. To this end, we systematically study 'selective prediction' in a large-scale setup of 17 datasets across several NLP tasks. Through comprehensive experiments under in-domain (IID), out-of-domain (OOD), and adversarial (ADV) settings, we show that despite leveraging additional resources (held-out data/computation), none of the existing approaches consistently and considerably outperforms MaxProb in all three settings. Furthermore, their performance does not translate well across tasks. For instance, Monte-Carlo Dropout outperforms all other approaches on Duplicate Detection datasets but does not fare well on NLI datasets, especially in the OOD setting. Thus, we recommend that future selective prediction approaches should be evaluated across tasks and settings for reliable estimation of their capabilities.
+            <i>Do all instances need inference through the big models for a correct prediction?</i><br> 
+        Perhaps not; some instances are easy and can be answered correctly by even small capacity models. This provides opportunities for improving the computational efficiency of systems. In this work, we present an explorative study on 'model cascading', a simple technique that utilizes a collection of models of varying capacities to accurately yet efficiently output predictions. Through comprehensive experiments in multiple task settings that differ in the number of models available for cascading (K value), we show that cascading improves both the computational efficiency and the prediction accuracy. For instance, in K=3 setting, cascading saves up to 88.93% computation cost and consistently achieves superior prediction accuracy with an improvement of up to 2.18%. We also study the impact of introducing additional models in the cascade and show that it further increases the efficiency improvements. Finally, we hope that our work will facilitate development of efficient NLP systems making their widespread adoption in real-world applications possible.
           </div>
         </div>
       </div>
             
-      <div class="col mt-2 p-0">
+      <!-- <div class="col mt-2 p-0">
         <div id="varshney2022investigating-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
@@ -177,8 +179,8 @@
 
           </div>
         </div>
-      </div>
-       -->
+      </div> -->
+      
 
       
       
@@ -960,6 +962,9 @@
 
 <!-- -------- -->
 
+
+
+
 <div class="row m-0 p-0" style="border-top: 1px solid #ddd;">
     <div class="col-sm-11 p-0">
       <ol class="bibliography">
@@ -969,7 +974,94 @@
     
       
         <span class="badge font-weight-bold danger-color-dark align-middle" style="width: 53px;">
-          ArXiv
+          arXiv
+        </span>
+      
+    
+      </div>
+  
+  <div class="col-sm-11 mt-2 mt-sm-0 p-0 pl-xs-0 pl-sm-4 pr-xs-0 pr-sm-2">
+    
+    <div id="verma2022learninguser" class="col p-0">
+      <h5 class="title mb-0">"John is 50 years old, can his son be 65?" Evaluating NLP Models' Understanding of Feasibility</h5>
+      <div class="author">
+        <a href="https://scholar.google.com/citations?user=ydjuhxsAAAAJ&hl=en" target="_blank">Himanshu Gupta</a>, <nobr><em>Neeraj Varshney</em></nobr>, <a href="https://scholar.google.co.in/citations?user=-7LK2SwAAAAJ&hl=en" target="_blank">Swaroop Mishra</a>, <a href="https://kuntalkumarpal.github.io/" target="_blank">Kuntal Kumar Pal</a>, <a>Saurabh Arjun Sawant</a>, <a>Kevin Scaria</a>, <a>Siddharth Goyal</a>, <a href="https://www.public.asu.edu/~cbaral/" target="_blank">Chitta Baral</a>
+          
+      </div>
+      <!-- <div>
+        <p class="periodical font-italic">
+          
+            AAAI Spring Symposium 2022
+        
+      </p>
+      <p  class="periodical font">We introduce an architecture that allows agents to detect novelties, characterize those novelties, and build an appropriate adaptive model to accommodate them.
+      </div> -->
+    
+      <div class="col p-0">        
+          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#feasibility-abstract" role="button" aria-expanded="false" aria-controls="feasibility-abstract">Abstract</a>        
+        
+          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#aaaisymp-bibtex" role="button" aria-expanded="false" aria-controls="aaaisymp-bibtex">BibTeX</a>                
+           -->
+            <!-- <a class="badge grey waves-effect font-weight-light mr-1" href="https://usc-isi-i2.github.io/AAAI2022SS/" target="_blank">Publisher</a> -->                  
+        
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2210.07471" target="_blank">arXiv</a>                
+      </div>          
+      
+      <div class="col mt-2 p-0">
+        <div id="feasibility-abstract" class="collapse">
+          <div class="abstract card card-body font-weight-light mr-0 mr-sm-3 p-3">
+            In current NLP research, large-scale language models and their abilities are widely being discussed. Some recent works have also found notable failures of these models. Often these failure examples involve complex reasoning abilities. This work focuses on a simple commonsense ability, reasoning about when an action (or its effect) is feasible. We introduce FeasibilityQA, a question-answering dataset involving binary classification (BCQ) and multi-choice multi-correct questions (MCQ) that test understanding of feasibility. We show that even state-of-the-art models such as GPT-3 struggle to answer the feasibility questions correctly. Specifically, on (MCQ, BCQ) questions, GPT-3 achieves accuracy of just (19%, 62%) and (25%, 64%) in zero-shot and few-shot settings, respectively. We also evaluate models by providing relevant knowledge statements required to answer the question and find that the additional knowledge leads to a 7% gain in performance, but the overall performance still remains low. These results make one wonder how much commonsense knowledge about action feasibility is encoded in GPT-3 and how well the model can reason about it.
+          </div>
+        </div>
+      </div>
+            
+      <!-- <div class="col mt-2 p-0">
+        <div id="wang2022benchmarking-bibtex" class="collapse">
+          <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
+            <pre>
+          @article{wang2022benchmarking,
+  title={Benchmarking Generalization via In-Context Instructions on 1,600+ Language Tasks},
+  author={Wang, Yizhong and Mishra, Swaroop and Alipoormolabashi, Pegah and Kordi, Yeganeh and Mirzaei, Amirreza and Arunkumar, Anjana and Ashok, Arjun and Dhanasekaran, Arut Selvan and Naik, Atharva and Stap, David and others},
+  journal={arXiv preprint arXiv:2204.07705},
+  year={2022}
+}</pre>
+
+          </div>
+        </div>
+      </div>
+       -->
+
+      
+      
+    </div>
+
+  </div>
+  
+</div>
+
+
+</li>
+
+</ol>
+    </div>
+    <div class="col-sm-1 align-self-start mt-2 p-0 pr-1">
+      <h3 class="bibliography-year">2022</h3>
+    </div>
+  </div>
+
+<!-- -------- -->
+
+
+<div class="row m-0 p-0" style="border-top: 1px solid #ddd;">
+    <div class="col-sm-11 p-0">
+      <ol class="bibliography">
+
+        <li><div class="row m-0 mt-3 p-0">
+      <div class="col-sm-1 p-0 abbr">
+    
+      
+        <span class="badge font-weight-bold danger-color-dark align-middle" style="width: 53px;">
+          arXiv
         </span>
       
     

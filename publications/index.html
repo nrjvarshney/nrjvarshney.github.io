@@ -195,7 +195,7 @@
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://2023.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2305.01812" target="_blank">Paper</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2023.acl-long.55/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -210,11 +210,18 @@
         <div id="postabstention-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-          @article{varshney2023post,
-  title={Post-Abstention: Towards Reliably Re-Attempting the Abstained Instances in QA},
-  author={Varshney, Neeraj and Baral, Chitta},
-  journal={arXiv preprint arXiv:2305.01812},
-  year={2023}
+          @inproceedings{varshney-baral-2023-post,
+    title = "Post-Abstention: Towards Reliably Re-Attempting the Abstained Instances in {QA}",
+    author = "Varshney, Neeraj  and
+      Baral, Chitta",
+    booktitle = "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.acl-long.55",
+    pages = "967--982",
+    abstract = "Despite remarkable progress made in natural language processing, even the state-of-the-art models often make incorrect predictions. Such predictions hamper the reliability of systems and limit their widespread adoption in real-world applications. {`}Selective prediction{'} partly addresses the above concern by enabling models to abstain from answering when their predictions are likely to be incorrect. While selective prediction is advantageous, it leaves us with a pertinent question {`}what to do after abstention{'}. To this end, we present an explorative study on {`}Post-Abstention{'}, a task that allows re-attempting the abstained instances with the aim of increasing **coverage** of the system without significantly sacrificing its **accuracy**. We first provide mathematical formulation of this task and then explore several methods to solve it. Comprehensive experiments on 11 QA datasets show that these methods lead to considerable risk improvements {--}performance metric of the Post-Abstention task{--} both in the in-domain and the out-of-domain settings. We also conduct a thorough analysis of these results which further leads to several interesting findings. Finally, we believe that our work will encourage and facilitate further research in this important area of addressing the reliability of NLP systems.",
 }</pre>
 
           </div>
@@ -283,7 +290,7 @@
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://2023.aclweb.org/" target="_blank">Publisher</a>                  
         
-          <a class="badge grey waves-effect font-weight-light mr-1" href="https://arxiv.org/abs/2305.05079" target="_blank">Paper</a>                
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2023.findings-acl.113/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
@@ -298,12 +305,22 @@
         <div id="novelty-bibtex" class="collapse">
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
-          @article{varshney2023unified,
-          title={A Unified Evaluation Framework for Novelty Detection and Accommodation in NLP with an Instantiation in Authorship Attribution},
-          author={Varshney, Neeraj and Gupta, Himanshu and Robertson, Eric and Liu, Bing and Baral, Chitta},
-          journal={arXiv preprint arXiv:2305.05079},
-          year={2023}
-        }</pre>
+          @inproceedings{varshney-etal-2023-unified,
+    title = "A Unified Evaluation Framework for Novelty Detection and Accommodation in {NLP} with an Instantiation in Authorship Attribution",
+    author = "Varshney, Neeraj  and
+      Gupta, Himanshu  and
+      Robertson, Eric  and
+      Liu, Bing  and
+      Baral, Chitta",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2023",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-acl.113",
+    pages = "1794--1818",
+    abstract = "State-of-the-art natural language processing models have been shown to achieve remarkable performance in {`}closed-world{'} settings where all the labels in the evaluation set are known at training time. However, in real-world settings, {`}novel{'} instances that do not belong to any known class are often observed. This renders the ability to deal with novelties crucial. To initiate a systematic research in this important area of {`}dealing with novelties{'}, we introduce NoveltyTask, a multi-stage task to evaluate a system{'}s performance on pipelined novelty {`}detection{'} and {`}accommodation{'} tasks. We provide mathematical formulation of NoveltyTask and instantiate it with the authorship attribution task that pertains to identifying the correct author of a given text. We use amazon reviews corpus and compile a large dataset (consisting of 250k instances across 200 authors/labels) for NoveltyTask. We conduct comprehensive experiments and explore several baseline methods for the task. Our results show that the methods achieve considerably low performance making the task challenging and leaving sufficient room for improvement. Finally, we believe our work will encourage research in this underexplored area of dealing with novelties, an important step en route to developing robust systems.",
+}</pre>
 
           </div>
         </div>

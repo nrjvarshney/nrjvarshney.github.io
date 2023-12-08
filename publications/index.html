@@ -345,7 +345,7 @@
   <div class="col-sm-11 mt-2 mt-sm-0 p-0 pl-xs-0 pl-sm-4 pr-xs-0 pr-sm-2">
     
     <div id="verma2022learninguser" class="col p-0">
-      <h5 class="title mb-0">On Developing Adversarial Attacks for Evaluating Logical Consistency of LLMs</h5>
+      <h5 class="title mb-0">LogicAttack: Adversarial Attacks for Evaluating Logical Consistency of Natural Language Inference</h5>
       <div class="author">
         Mutsumi Nakamura, Santosh Mashetty, Mihir Parmar, <nobr><em>Neeraj Varshney</em></nobr> and <a href="https://www.public.asu.edu/~cbaral/" target="_blank">Chitta Baral</a>
           
@@ -360,19 +360,19 @@
       </div>
     
       <div class="col p-0">        
-          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#logicattack-abstract" role="button" aria-expanded="false" aria-controls="logicattack-abstract">Abstract</a>         -->
+          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#logicattack-abstract" role="button" aria-expanded="false" aria-controls="logicattack-abstract">Abstract</a>        
         
-          <!-- <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#logicattack-bibtex" role="button" aria-expanded="false" aria-controls="logicattack-bibtex">BibTeX</a>                 -->
+          <a class="badge grey waves-effect font-weight-light mr-1" data-toggle="collapse" href="#logicattack-bibtex" role="button" aria-expanded="false" aria-controls="logicattack-bibtex">BibTeX</a>                
           
             <a class="badge grey waves-effect font-weight-light mr-1" href="https://2023.emnlp.org/" target="_blank">Publisher</a>                  
         
-          <!-- <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2023.acl-long.55/" target="_blank">Paper</a>                 -->
+          <a class="badge grey waves-effect font-weight-light mr-1" href="https://aclanthology.org/2023.findings-emnlp.889/" target="_blank">Paper</a>                
       </div>          
       
       <div class="col mt-2 p-0">
         <div id="logicattack-abstract" class="collapse">
           <div class="abstract card card-body font-weight-light mr-0 mr-sm-3 p-3">
-            
+            Recently Large Language Models (LLMs) such as GPT-3, ChatGPT, and FLAN have led to impressive progress in Natural Language Inference (NLI) tasks. However, these models may rely on simple heuristics or artifacts in the evaluation data to achieve their high performance, which suggests that they still suffer from logical inconsistency. To assess the logical consistency of these models, we propose a LogicAttack, a method to attack NLI models using diverse logical forms of premise and hypothesis, providing a more robust evaluation of their performance. Our approach leverages a range of inference rules from propositional logic, such as Modus Tollens and Bidirectional Dilemma, to generate effective adversarial attacks and identify common vulnerabilities across multiple NLI models. We achieve an average ~53% Attack Success Rate (ASR) across multiple logic-based attacks. Moreover, we demonstrate that incorporating generated attack samples into training enhances the logical reasoning ability of the target model and decreases its vulnerability to logic-based attacks. Data and source code are available at https://github.com/msantoshmadhav/LogicAttack.
           </div>
         </div>
       </div>
@@ -382,7 +382,25 @@
           <div class="bibtex card card-body font-weight-light mr-0 mr-sm-3 p-3">
             <pre>
           </pre>
-
+@inproceedings{nakamura-etal-2023-logicattack,
+    title = "{L}ogic{A}ttack: Adversarial Attacks for Evaluating Logical Consistency of Natural Language Inference",
+    author = "Nakamura, Mutsumi  and
+      Mashetty, Santosh  and
+      Parmar, Mihir  and
+      Varshney, Neeraj  and
+      Baral, Chitta",
+    editor = "Bouamor, Houda  and
+      Pino, Juan  and
+      Bali, Kalika",
+    booktitle = "Findings of the Association for Computational Linguistics: EMNLP 2023",
+    month = dec,
+    year = "2023",
+    address = "Singapore",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.findings-emnlp.889",
+    pages = "13322--13334",
+    abstract = "Recently Large Language Models (LLMs) such as GPT-3, ChatGPT, and FLAN have led to impressive progress in Natural Language Inference (NLI) tasks. However, these models may rely on simple heuristics or artifacts in the evaluation data to achieve their high performance, which suggests that they still suffer from logical inconsistency. To assess the logical consistency of these models, we propose a LogicAttack, a method to attack NLI models using diverse logical forms of premise and hypothesis, providing a more robust evaluation of their performance. Our approach leverages a range of inference rules from propositional logic, such as Modus Tollens and Bidirectional Dilemma, to generate effective adversarial attacks and identify common vulnerabilities across multiple NLI models. We achieve an average {\textasciitilde}53{\%} Attack Success Rate (ASR) across multiple logic-based attacks. Moreover, we demonstrate that incorporating generated attack samples into training enhances the logical reasoning ability of the target model and decreases its vulnerability to logic-based attacks. Data and source code are available at https://github.com/msantoshmadhav/LogicAttack.",
+}
           </div>
         </div>
       </div>
